@@ -26,7 +26,8 @@ export default function MeuFormulario() {
 
   useEffect(() => {
     localStorage.setItem('submissoes', JSON.stringify(submissoes))
-  })
+  }, [submissoes])
+
   const [editIndex, setEditIndex] = useState<number | null>(null)
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
