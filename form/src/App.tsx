@@ -15,13 +15,38 @@ export default function MeuFormulario() {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<FormValues>()
 
   const [submissoes, setSubmissoes] = useState<FormValues[]>([])
+  const [editIndex, setEditIndex] = useState<number | null>(null)
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    setSubmissoes((submissoes) => [...submissoes, data])
+    if (editIndex !== null) {
+      // Editando um item existente
+      const novasSubmissoes = submissoes.map((item, idx) =>
+        idx === editIndex ? data : item
+      )
+      setSubmissoes(novasSubmissoes)
+      setEditIndex(null)
+    } else {
+      // Adicionando novo item
+      setSubmissoes([...submissoes, data])
+    }
     reset()
+  }
+
+  const removerItem = (indice: number) => {
+    setSubmissoes(submissoes.filter((_, idx) => idx !== indice))
+    if (editIndex === indice) setEditIndex(null)
+  }
+
+  const editarItem = (indice: number) => {
+    const item = submissoes[indice]
+    setValue('nome', item.nome)
+    setValue('email', item.email)
+    setValue('idade', item.idade)
+    setEditIndex(indice)
   }
 
   return (
@@ -69,7 +94,12 @@ export default function MeuFormulario() {
           {errors.idade && <span style={{ color: "#646cff" }}>{errors.idade.message}</span>}
         </div>
 
-        <button type="submit">Enviar</button>
+        <button type="submit">{editIndex !== null ? "Salvar" : "Enviar"}</button>
+        {editIndex !== null && (
+          <button type="button" onClick={() => { reset(); setEditIndex(null); }}>
+            Cancelar
+          </button>
+        )}
       </form>
 
       <h2>Lista de Envios</h2>
@@ -79,6 +109,7 @@ export default function MeuFormulario() {
             <th>Nome</th>
             <th>Email</th>
             <th>Idade</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -87,6 +118,10 @@ export default function MeuFormulario() {
               <td>{item.nome}</td>
               <td>{item.email}</td>
               <td>{item.idade}</td>
+              <td>
+                <button onClick={() => editarItem(idx)}>Editar</button>
+                <button onClick={() => removerItem(idx)}>Excluir</button>
+              </td>
             </tr>
           ))}
         </tbody>
