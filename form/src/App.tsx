@@ -1,5 +1,5 @@
 import { useForm, type SubmitHandler } from 'react-hook-form'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 
 
@@ -18,7 +18,15 @@ export default function MeuFormulario() {
     setValue,
   } = useForm<FormValues>()
 
-  const [submissoes, setSubmissoes] = useState<FormValues[]>([])
+  // Carega o localStorage ao iniciar
+  const [submissoes, setSubmissoes] = useState<FormValues[]>(() => {
+    const data =localStorage.getItem('submissoes')
+    return data ? JSON.parse(data) : [] 
+  })
+
+  useEffect(() => {
+    localStorage.setItem('submissoes', JSON.stringify(submissoes))
+  })
   const [editIndex, setEditIndex] = useState<number | null>(null)
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
@@ -84,6 +92,7 @@ export default function MeuFormulario() {
           <label>Idade:</label>
           <input
             type="number"
+            min={0}
             {...register("idade", {
               required: "Informe a idade",
               min: { value: 10, message: "você precisa ter pelo menos 10 anos" },
