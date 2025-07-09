@@ -7,6 +7,7 @@ interface FormValues {
   nome: string
   email: string
   idade: number
+  sexo: string
 }
 
 export default function MeuFormulario() {
@@ -55,6 +56,7 @@ export default function MeuFormulario() {
     setValue('nome', item.nome)
     setValue('email', item.email)
     setValue('idade', item.idade)
+    setValue('sexo', item.sexo)
     setEditIndex(indice)
   }
 
@@ -103,6 +105,20 @@ export default function MeuFormulario() {
           <br />
           {errors.idade && <span style={{ color: "#646cff" }}>{errors.idade.message}</span>}
         </div>
+        
+        <div>
+          <label>Sexo:</label>
+          <select
+            {...register("sexo", { required: "Selecione o sexo" })}
+            defaultValue=""     
+          >
+            <option value="" disabled>Selecione uma opção</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Feminino">Feminino</option>
+          </select>
+          <br />
+          {errors.sexo && <span style={{ color: "#646cff" }}>{errors.sexo.message}</span>}
+        </div>
 
         <button type="submit">{editIndex !== null ? "Salvar" : "Enviar"}</button>
         {editIndex !== null && (
@@ -119,6 +135,7 @@ export default function MeuFormulario() {
             <th>Nome</th>
             <th>Email</th>
             <th>Idade</th>
+            <th>Sexo</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -128,6 +145,7 @@ export default function MeuFormulario() {
               <td>{item.nome}</td>
               <td>{item.email}</td>
               <td>{item.idade}</td>
+              <td>{item.sexo}</td>
               <td>
                 <button onClick={() => editarItem(idx)}>Editar</button>
                 <button onClick={() => removerItem(idx)}>Excluir</button>
@@ -139,3 +157,4 @@ export default function MeuFormulario() {
     </>
   )
 }
+
