@@ -62,21 +62,25 @@ export default function UserTodo() {
                 <input name="todo" placeholder="Nova Tarefa"/>
             </form>
             <ul>
-                {todos.map((todo, idx) => (
-                    <li key={idx}>
-                        <input
-                            type="checkbox"
-                            checked={todo.concluido}
-                            onChange={() => {
-                                setTodos(todos.map((t, i) =>
-                                    i === idx ? { ...t, concluido: !t.concluido } : t
-                            ))
-                            }}
-                        />
-                        {todo.texto}
-                        <button onClick={() => setTodos(todos.filter((_, i) => i !== idx ))}>Remover</button>
-                    </li>
-                ))}
+                {todos.map((todo, idx) => {
+                    const checkboxId = `todo-checkbox-${idx}`;
+                    return (
+                        <li key={idx} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                            <input
+                                id={checkboxId}
+                                type="checkbox"
+                                checked={todo.concluido}
+                                onChange={() => {
+                                    setTodos(todos.map((t, i) =>
+                                        i === idx ? { ...t, concluido: !t.concluido } : t
+                                    ))
+                                }}
+                            />
+                            <label htmlFor={checkboxId}>{todo.texto}</label>
+                            <button onClick={() => setTodos(todos.filter((_, i) => i !== idx ))}>Remover</button>
+                        </li>
+                    );
+                })}
             </ul>
         </div>
     )
