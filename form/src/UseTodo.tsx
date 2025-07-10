@@ -1,5 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import './App.css'
+import './index.css'
 
 interface TodoItem {
     texto: string
@@ -76,8 +78,10 @@ export default function UserTodo() {
                                     ))
                                 }}
                             />
-                            <label htmlFor={checkboxId}>{todo.texto}</label>
-                            <button onClick={() => setTodos(todos.filter((_, i) => i !== idx ))}>Remover</button>
+                            <label htmlFor={checkboxId} className="btn">{todo.texto}</label>
+                            <button style={{}} onClick={() => setTodos(todos.filter((_, i) => i !== idx ))}>
+                                Remover
+                            </button>
                         </li>
                     );
                 })}
